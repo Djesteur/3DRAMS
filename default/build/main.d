@@ -1,5 +1,8 @@
 main.o: \
- /mnt/Data/Programmation/ProjetsPerso/3DRAMS/Homebrew/Sources/main.cpp \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/sources/main.c \
+ /opt/devkitpro/libctru/include/sys/socket.h \
+ /opt/devkitpro/libctru/include/netinet/in.h \
+ /opt/devkitpro/libctru/include/arpa/inet.h \
  /opt/devkitpro/libctru/include/3ds.h \
  /opt/devkitpro/libctru/include/3ds/types.h \
  /opt/devkitpro/libctru/include/3ds/result.h \
@@ -49,8 +52,6 @@ main.o: \
  /opt/devkitpro/libctru/include/3ds/services/ptmsysm.h \
  /opt/devkitpro/libctru/include/3ds/services/pxidev.h \
  /opt/devkitpro/libctru/include/3ds/services/soc.h \
- /opt/devkitpro/libctru/include/netinet/in.h \
- /opt/devkitpro/libctru/include/sys/socket.h \
  /opt/devkitpro/libctru/include/3ds/services/mic.h \
  /opt/devkitpro/libctru/include/3ds/services/mvd.h \
  /opt/devkitpro/libctru/include/3ds/services/nfc.h \
@@ -73,7 +74,16 @@ main.o: \
  /opt/devkitpro/libctru/include/3ds/applets/miiselector.h \
  /opt/devkitpro/libctru/include/3ds/sdmc.h \
  /opt/devkitpro/libctru/include/3ds/romfs.h \
- /opt/devkitpro/libctru/include/3ds/font.h
+ /opt/devkitpro/libctru/include/3ds/font.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/plgldr.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/csvc.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h
+
+/opt/devkitpro/libctru/include/sys/socket.h:
+
+/opt/devkitpro/libctru/include/netinet/in.h:
+
+/opt/devkitpro/libctru/include/arpa/inet.h:
 
 /opt/devkitpro/libctru/include/3ds.h:
 
@@ -173,10 +183,6 @@ main.o: \
 
 /opt/devkitpro/libctru/include/3ds/services/soc.h:
 
-/opt/devkitpro/libctru/include/netinet/in.h:
-
-/opt/devkitpro/libctru/include/sys/socket.h:
-
 /opt/devkitpro/libctru/include/3ds/services/mic.h:
 
 /opt/devkitpro/libctru/include/3ds/services/mvd.h:
@@ -222,3 +228,9 @@ main.o: \
 /opt/devkitpro/libctru/include/3ds/romfs.h:
 
 /opt/devkitpro/libctru/include/3ds/font.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/plgldr.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/csvc.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h:
