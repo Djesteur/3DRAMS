@@ -19,16 +19,16 @@ SOURCES 	:= 	sources
 #---------------------------------------------------------------------------------
 ARCH		:=	-march=armv6k -mlittle-endian -mtune=mpcore -mfloat-abi=hard 
 
-CFLAGS		:=	-Os -mword-relocations \
+CFLAGS		:=	-O0 -g -mword-relocations \
 				-fomit-frame-pointer -ffunction-sections -fno-strict-aliasing \
 				$(ARCH)
 
-CFLAGS		+=	$(INCLUDE) -DARM11 -D_3DS 
+CFLAGS		+=	$(INCLUDE) -DARM11 -D_3DS -O0 -g
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS		:= $(ARCH)
-LDFLAGS		:= -T $(TOPDIR)/3ds.ld $(ARCH) -Os -Wl,-Map,$(notdir $*.map),--gc-sections 
+LDFLAGS		:= -T $(TOPDIR)/3ds.ld $(ARCH) -O0 -g -Wl,-Map,$(notdir $*.map),--gc-sections 
 
 LIBS		:= -lctru
 
@@ -98,6 +98,7 @@ $(OUTPUT).3gx : $(OFILES)
 	@echo creating $(notdir $@)
 	@$(OBJCOPY) -O binary $(OUTPUT).elf $(TOPDIR)/objdump -S
 	@3gxtool -s $(TOPDIR)/objdump $(TOPDIR)/$(PLGINFO) $@
+	@cp ../default.elf ../save.elf
 	@- rm $(TOPDIR)/objdump
 
 

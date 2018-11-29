@@ -1,8 +1,8 @@
 main.o: \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/sources/main.c \
- /opt/devkitpro/libctru/include/sys/socket.h \
- /opt/devkitpro/libctru/include/netinet/in.h \
  /opt/devkitpro/libctru/include/arpa/inet.h \
+ /opt/devkitpro/libctru/include/netinet/in.h \
+ /opt/devkitpro/libctru/include/sys/socket.h \
  /opt/devkitpro/libctru/include/3ds.h \
  /opt/devkitpro/libctru/include/3ds/types.h \
  /opt/devkitpro/libctru/include/3ds/result.h \
@@ -77,13 +77,16 @@ main.o: \
  /opt/devkitpro/libctru/include/3ds/font.h \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/plgldr.h \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/csvc.h \
- /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestExecutor.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h
 
-/opt/devkitpro/libctru/include/sys/socket.h:
+/opt/devkitpro/libctru/include/arpa/inet.h:
 
 /opt/devkitpro/libctru/include/netinet/in.h:
 
-/opt/devkitpro/libctru/include/arpa/inet.h:
+/opt/devkitpro/libctru/include/sys/socket.h:
 
 /opt/devkitpro/libctru/include/3ds.h:
 
@@ -234,3 +237,9 @@ main.o: \
 /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/csvc.h:
 
 /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestExecutor.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h:

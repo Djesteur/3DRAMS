@@ -1,11 +1,24 @@
-#include "MainWindow.hpp"
+#include <thread>
+
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+#include "MainWindow.hpp"
 
-    return a.exec();
+#include "ConnectionToPlugin.hpp"
+
+int main(int argc, char *argv[]) {
+
+    ConnectionToPlugin plugin;
+
+    QApplication a(argc, argv);
+    MainWindow w{plugin};
+
+    std::thread communicationThread{[&plugin]() {  plugin.run(); }};
+
+    w.show();
+    a.exec();
+
+    communicationThread.join();
+
+    return 0;
 }

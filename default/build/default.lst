@@ -1,157 +1,250 @@
+00000000 a shift
 07000100 T _start
 07000100 T __start__
 0700012c t ClearMem
 07000140 t ClrLoop
 07000158 T _init
 07000188 00000390 T strcmp
-07000510 t deregister_tm_clones
-0700053c t register_tm_clones
-07000574 t __do_global_dtors_aux
-070005b8 t frame_dummy
-070005ec 00000038 T SocketContextInit
-07000624 00000038 T SocketContextExit
-0700065c 00000074 T NewEntry
-070006d0 0000004c T InitMenu
-0700071c 00000114 T InitTCP
-07000830 00000240 T ThreadMain
-07000a70 00000040 T __system_allocateHeaps
-07000ab0 00000078 T main
-07000b28 00000070 T plgLdrInit
-07000b98 00000034 T plgLdrExit
-07000bcc 00000088 T PLGLDR__DisplayMenu
-07000c54 00000064 T PLGLDR__DisplayMessage
-07000cb8 00000068 T PLGLDR__DisplayErrMessage
-07000d20 T svcControlProcess
-07000d28 00000058 T srvExit
-07000d80 00000038 T srvRegisterClient
-07000db8 000000c8 T srvInit
-07000e80 00000080 T srvGetServiceHandleDirect
-07000f00 00000038 T srvGetServiceHandle
-07000f38 0000000c T srvPmGetSessionHandle
-07000f44 000004d8 T select
-0700141c 000001e4 T accept
-07001600 00000154 T socket
-07001754 00000020 T recv
-07001774 00000010 t soc_open
-07001784 00000030 t soc_read
-070017b4 00000030 t soc_write
-070017e4 00000090 t soc_close
-07001874 0000014c T socInit
-070019c0 00000088 T socExit
-07001a48 0000003c T _net_convert_error
-07001a84 0000017c T bind
-07001c00 000000f8 T listen
-07001cf8 0000013c T socuipc_cmd7
-07001e34 00000154 T socuipc_cmd8
-07001f88 00000010 T soc_recvfrom
-07001f98 00000090 T recvfrom
-07002028 0000015c T socuipc_cmd9
-07002184 00000160 T socuipc_cmda
-070022e4 00000010 T soc_sendto
-070022f4 00000238 T poll
-0700252c T svcControlMemory
-0700254c T svcCreateThread
-0700256c T svcExitThread
-07002574 T svcSignalEvent
-0700257c T svcCreateMemoryBlock
-07002594 T svcCloseHandle
-0700259c T svcWaitSynchronization
-070025a4 T svcDuplicateHandle
-070025b8 T svcConnectToPort
-070025cc T svcSendSyncRequest
-070025d4 00000080 T envGetHandle
-07002654 00000020 T calloc
-07002674 00000094 T _calloc_r
-07002708 0000000c T __errno
-07002714 00000018 T malloc
-0700272c 00000018 T free
-07002744 0000078c T _malloc_r
-07002ed0 00000118 T memcpy
-07002fe8 00000114 T memset
-070030fc 0000000c T __malloc_lock
-07003108 0000000c T __malloc_unlock
-07003114 0000063c T _strerror_r
-07003750 00000020 T strerror
-07003770 0000005c T strlen
-070037cc 000000e0 T strncpy
-070038ac 0000005c T strnlen
-07003908 00000008 T _user_strerror
-07003910 000000f8 T _malloc_trim_r
-07003a08 000002e4 T _free_r
-07003cec 00000008 t null_write
-07003cf4 000000cc T FindDevice
-07003dc0 00000028 T RemoveDevice
-07003de8 00000098 T AddDevice
-07003e80 00000070 T _sbrk_r
-07003ef0 00000018 T __libc_lock_acquire
-07003f08 00000018 T __libc_lock_release
-07003f20 00000018 T __libc_lock_acquire_recursive
-07003f38 00000018 T __libc_lock_release_recursive
-07003f50 0000008c T __release_handle
-07003fdc 000000b4 T __alloc_handle
-07004090 00000018 T __get_handle
-070040a8 00000028 T __getreent
-070040d0 00000024 T __locale_ctype_ptr
-070040f4 000002fc T __utf8_mbtowc
-070043f0 00000180 T strchr
-07004570 0000010c T strncmp
-0700467c 000000e8 T __utf8_wctomb
-07004764 T _fini
-07004898 0000004d r _net_error_code_map
-07004ff0 00000070 R dotab_stdnull
-070050a8 00000101 R _ctype_
-070051ac R __exidx_end
-070051ac R __exidx_start
-070051ac 00000068 d soc_devoptab
-07005214 00000408 D __malloc_av_
-0700561c 00000004 D __malloc_sbrk_base
-07005620 00000004 D __malloc_trim_threshold
-07005624 0000000c d __malloc_recursive_mutex
-07005630 00000004 d defaultDevice
-07005634 00000040 D devoptab_list
-07005674 00000004 d __hndl_lock
-07005678 0000000c d __stderr_handle
-07005684 0000000c d __stdin_handle
-07005690 0000000c d __stdout_handle
-0700569c 00001000 d handles
-0700669c 00000004 D _impure_ptr
-070066a0 00000460 d impure_data
-07006b00 0000016c D __global_locale
-07006c6c t __frame_dummy_init_array_entry
-07006c6c D __tdata_lma
-07006c6c D __tdata_lma_end
-07006c6c D __TMC_END__
-07006c70 t __do_global_dtors_aux_fini_array_entry
-07006c74 B __c_bss_start
-07006c78 00000004 b g_socContext
-07006c7c 00000004 b onProcessExitEvent
-07006c80 00000004 b resumeExitEvent
-07006c84 00000004 B __ctru_heap_size
-07006c88 00000004 b thread
-07006c8c 00000004 B __ctru_linear_heap_size
-07006c90 00001000 b stack
-07007c90 00001978 b menu
-07009608 00000004 b plgLdrRefCount
-0700960c 00000004 b plgLdrHandle
-07009610 b completed.10347
-07009614 b object.10352
-0700962c 00000004 b srvHandle
-07009630 00000004 b srvRefCount
-07009634 00000004 b srvPmHandle
-07009638 00000004 B SOCU_handle
-0700963c 00000004 B socMemhandle
-07009640 00000028 B __malloc_current_mallinfo
-07009668 00000004 B __malloc_max_sbrked_mem
-0700966c 00000004 B __malloc_max_total_mem
-07009670 00000004 B __malloc_top_pad
-07009674 00000004 b heap_start.7392
-07009678 00000004 B fake_heap_end
-0700967c 00000004 B fake_heap_start
-07009680 00000048 B __syscalls
-070096c8 00000004 B __service_ptr
-070096cc 00000004 B __ctru_linear_heap
-070096d0 00000004 B __ctru_heap
-070096d4 B __c_bss_end
-070096d4 A __end__
-070096d4 B __tls_end
-070096d4 B __tls_start
+07000510 T __aeabi_idiv
+07000510 00000220 T __divsi3
+07000518 t .divsi3_skip_div0_test
+07000730 00000020 T __aeabi_idivmod
+07000750 00000004 W __aeabi_idiv0
+07000750 00000004 W __aeabi_ldiv0
+07000754 T __aeabi_uldivmod
+07000790 t deregister_tm_clones
+070007bc t register_tm_clones
+070007f4 t __do_global_dtors_aux
+07000838 t frame_dummy
+0700086c 0000001c t htonl
+07000888 00000024 t htons
+070008ac 000000fc T NewEntry
+070009a8 00000050 T InitMenu
+070009f8 000001ec T InitTCP
+07000be4 00000058 T SocketContextInit
+07000c3c 00000058 T SocketContextExit
+07000c98 0000007c T Flash
+07000d14 00000214 T communicateWith3DRAMS
+07000f28 00000384 T ThreadMain
+070012ac 00000074 T __system_allocateHeaps
+07001320 0000009c T main
+070013bc 00000044 t IPC_MakeHeader
+07001400 00000030 t IPC_Desc_Buffer
+07001430 0000001c t getThreadLocalStorage
+0700144c 00000018 t getThreadCommandBuffer
+07001464 00000090 T plgLdrInit
+070014f4 00000050 T plgLdrExit
+07001544 0000019c T PLGLDR__DisplayMenu
+070016e0 000000f0 T PLGLDR__DisplayMessage
+070017d0 00000104 T PLGLDR__DisplayErrMessage
+070018d4 000000e0 T requestToString
+070019b4 00000130 T stringToRequest
+07001ae4 00000034 T freeRequestParameters
+07001b18 000000bc T hasValidNumberOfParameters
+07001bd4 000000fc T initResultArray
+07001cd0 000000a0 T addValue
+07001d70 000000f4 T executeRequest
+07001e64 00000014 T connectRequest
+07001e78 00000024 T disconnectRequest
+07001e9c 00000014 T getValueRequest
+07001eb0 00000014 T getRangeOfValueRequest
+07001ec4 00000014 T setValueRequest
+07001ed8 00000014 T sendCheatCodeRequest
+07001eec 00000014 T deleteCheatCodeRequest
+07001f00 00000014 T changeEnableCheatCodeRequest
+07001f14 00000014 T getSetOfValueRequest
+07001f28 T svcControlProcess
+07001f30 00000058 T srvExit
+07001f88 00000038 T srvRegisterClient
+07001fc0 000000c8 T srvInit
+07002088 00000080 T srvGetServiceHandleDirect
+07002108 00000038 T srvGetServiceHandle
+07002140 0000000c T srvPmGetSessionHandle
+0700214c 000004d8 T select
+07002624 000001e4 T accept
+07002808 00000154 T socket
+0700295c 00000020 T recv
+0700297c 00000010 t soc_open
+0700298c 00000030 t soc_read
+070029bc 00000030 t soc_write
+070029ec 00000090 t soc_close
+07002a7c 0000014c T socInit
+07002bc8 00000088 T socExit
+07002c50 0000003c T _net_convert_error
+07002c8c 0000017c T bind
+07002e08 000000f8 T listen
+07002f00 0000013c T socuipc_cmd7
+0700303c 00000154 T socuipc_cmd8
+07003190 00000010 T soc_recvfrom
+070031a0 00000090 T recvfrom
+07003230 0000015c T socuipc_cmd9
+0700338c 00000160 T socuipc_cmda
+070034ec 00000010 T soc_sendto
+070034fc 00000090 T sendto
+0700358c 00000238 T poll
+070037c4 00000020 T send
+070037e4 T svcControlMemory
+07003804 T svcCreateThread
+07003824 T svcExitThread
+0700382c T svcSleepThread
+07003834 T svcSignalEvent
+0700383c T svcCreateMemoryBlock
+07003854 T svcCloseHandle
+0700385c T svcWaitSynchronization
+07003864 T svcDuplicateHandle
+07003878 T svcConnectToPort
+0700388c T svcSendSyncRequest
+07003894 00000080 T envGetHandle
+07003914 00000058 T __assert_func
+0700396c 00000020 T calloc
+0700398c 00000094 T _calloc_r
+07003a20 0000000c T __errno
+07003a2c 0000003c T fiprintf
+07003a68 00000018 T malloc
+07003a80 00000018 T free
+07003a98 0000078c T _malloc_r
+07004224 00000118 T memcpy
+0700433c 00000114 T memset
+07004450 0000000c T __malloc_lock
+0700445c 0000000c T __malloc_unlock
+07004468 0000063c T _strerror_r
+07004aa4 00000020 T strerror
+07004ac4 0000005c T strlen
+07004b20 000000e0 T strncpy
+07004c00 0000005c T strnlen
+07004c5c 00000018 T close
+07004c74 00000008 T _user_strerror
+07004c7c 00000630 t get_arg
+070052ac 00000034 T __sprint_r
+070052e0 00002544 T _vfiprintf_r
+07007824 000000d0 t __sbprintf
+070078f4 000000a0 T _wcrtomb_r
+07007994 00000020 T _wcsrtombs_r
+070079b4 00000150 T __swsetup_r
+07007b04 00000014 T abort
+07007b18 00000270 T __sflush_r
+07007d88 00000094 T _fflush_r
+07007e1c 00000078 t std
+07007e94 0000000c T _cleanup_r
+07007ea0 0000008c T __sinit
+07007f2c 0000000c T __sfp_lock_acquire
+07007f38 0000000c T __sfp_lock_release
+07007f44 000000f8 T _malloc_trim_r
+0700803c 000002e4 T _free_r
+07008320 000004a4 T __sfvwrite_r
+070087c4 00000080 T _fwalk_reent
+07008844 00000024 T _localeconv_r
+07008868 00000024 T __locale_mb_cur_max
+0700888c 00000024 T __locale_ctype_ptr
+070088b0 00000094 T __swhatbuf_r
+07008944 000000f4 T __smakebuf_r
+07008a38 000002fc T __utf8_mbtowc
+07008d34 00000100 T memchr
+07008e34 00000154 T memmove
+07008f88 000004bc T _realloc_r
+07009444 00000098 T _raise_r
+070094dc 00000018 T raise
+070094f4 0000003c T __sread
+07009530 00000068 T __swrite
+07009598 00000048 T __sseek
+070095e0 00000008 T __sclose
+070095e8 00000180 T strchr
+07009768 0000010c T strncmp
+07009874 00000184 T _wcsnrtombs_l
+070099f8 00000064 T _wcsnrtombs_r
+07009a5c 000000e8 T __utf8_wctomb
+07009b44 00000160 T _fclose_r
+07009ca4 00000008 t null_write
+07009cac 000000cc T FindDevice
+07009d78 00000028 T RemoveDevice
+07009da0 00000098 T AddDevice
+07009e38 00000084 T _close_r
+07009ebc 00000074 T _fstat_r
+07009f30 00000010 T _getpid_r
+07009f40 00000008 T _isatty_r
+07009f48 00000010 T _kill_r
+07009f58 00000084 T _lseek_r
+07009fdc 00000080 T _read_r
+0700a05c 00000070 T _sbrk_r
+0700a0cc 00000080 T _write_r
+0700a14c 00000024 T _exit
+0700a170 00000008 T __flockfile
+0700a178 00000008 T __funlockfile
+0700a180 00000018 T __libc_lock_acquire
+0700a198 00000018 T __libc_lock_release
+0700a1b0 00000018 T __libc_lock_init_recursive
+0700a1c8 00000018 T __libc_lock_acquire_recursive
+0700a1e0 00000018 T __libc_lock_release_recursive
+0700a1f8 00000018 T __libc_lock_close_recursive
+0700a210 0000008c T __release_handle
+0700a29c 000000b4 T __alloc_handle
+0700a350 00000018 T __get_handle
+0700a368 00000028 T __getreent
+0700a390 00000128 T __udivmoddi4
+0700a4b8 T _fini
+0700a67c 0000001b r __func__.6241
+0700a6b4 0000004d r _net_error_code_map
+0700ae70 00000010 r blanks.8688
+0700ae80 00000010 r zeroes.8689
+0700aed8 0000006c R __action_table
+0700af44 00000100 R __chclass
+0700b044 0000006c R __state_table
+0700b0b0 00000101 R _ctype_
+0700b1bc 00000070 R dotab_stdnull
+0700b22c R __exidx_end
+0700b22c R __exidx_start
+0700b22c 00000068 d soc_devoptab
+0700b294 00000408 D __malloc_av_
+0700b69c 00000004 D __malloc_sbrk_base
+0700b6a0 00000004 D __malloc_trim_threshold
+0700b6a4 0000000c d __malloc_recursive_mutex
+0700b6b0 0000000c d __sfp_recursive_mutex
+0700b6bc 0000000c d __sinit_recursive_mutex
+0700b6c8 00000004 D _impure_ptr
+0700b6d0 00000460 d impure_data
+0700bb30 0000016c D __global_locale
+0700bc9c 00000004 d defaultDevice
+0700bca0 00000040 D devoptab_list
+0700bce0 00000004 d __hndl_lock
+0700bce4 0000000c d __stderr_handle
+0700bcf0 0000000c d __stdin_handle
+0700bcfc 0000000c d __stdout_handle
+0700bd08 00001000 d handles
+0700cd08 t __frame_dummy_init_array_entry
+0700cd08 D __tdata_lma
+0700cd08 D __tdata_lma_end
+0700cd08 D __TMC_END__
+0700cd0c t __do_global_dtors_aux_fini_array_entry
+0700cd10 B __c_bss_start
+0700cd10 00001978 b menu
+0700e688 00000004 b thread
+0700e68c 00000004 b onProcessExitEvent
+0700e690 00000004 b resumeExitEvent
+0700e698 00001000 b stack
+0700f698 00000004 b g_socContext
+0700f69c 00000004 B __ctru_heap_size
+0700f6a0 00000004 B __ctru_linear_heap_size
+0700f6a4 00000004 b plgLdrHandle
+0700f6a8 00000004 b plgLdrRefCount
+0700f6ac b completed.10347
+0700f6b0 b object.10352
+0700f6c8 00000004 b srvHandle
+0700f6cc 00000004 b srvRefCount
+0700f6d0 00000004 b srvPmHandle
+0700f6d4 00000004 B SOCU_handle
+0700f6d8 00000004 B socMemhandle
+0700f6dc 00000028 B __malloc_current_mallinfo
+0700f704 00000004 B __malloc_max_sbrked_mem
+0700f708 00000004 B __malloc_max_total_mem
+0700f70c 00000004 B __malloc_top_pad
+0700f710 00000004 b heap_start.7392
+0700f714 00000004 B fake_heap_end
+0700f718 00000004 B fake_heap_start
+0700f71c 00000048 B __syscalls
+0700f764 00000004 B __service_ptr
+0700f768 00000004 B __ctru_linear_heap
+0700f76c 00000004 B __ctru_heap
+0700f770 B __c_bss_end
+0700f770 A __end__
+0700f770 B __tls_end
+0700f770 B __tls_start

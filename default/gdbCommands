@@ -1,0 +1,5 @@
+file save.elf
+set architecture arm
+target remote 192.168.1.10:4000
+b 175
+continue

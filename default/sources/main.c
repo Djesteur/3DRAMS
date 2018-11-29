@@ -1,19 +1,17 @@
-#include <string.h>
-#include <malloc.h>
 #include <errno.h>
-#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <netinet/in.h>
+#include <unistd.h>
 #include <arpa/inet.h>
+
 #include <3ds.h>
 
 #include "plgldr.h"
 #include "csvc.h"
 #include "common.h"
+
+#include "RequestTranslater.h"
+#include "RequestExecutor.h"
 
 static PluginMenu   menu;
 static Handle       thread;
@@ -23,49 +21,32 @@ static u8           stack[STACK_SIZE] ALIGN(8);
 #define SOC_ALIGN       0x1000
 #define SOC_BUFFERSIZE  0x100000 // Used in 3ds example in the github of devkitARM
 
-void* __service_ptr;
 static u32 *g_socContext = NULL;
+void* __service_ptr;
 
-
-
-Result SocketContextInit() {
-
-    PluginHeader *header = (PluginHeader *)0x07000000;
-    return svcControlMemory((u32 *)&g_socContext, header->heapVA + header->heapSize, 0, SOC_BUFFERSIZE, MEMOP_ALLOC, MEMPERM_READ | MEMPERM_WRITE);
-}
-
-Result SocketContextExit() {
-
-    PluginHeader *header = (PluginHeader *)0x07000000;
-    return svcControlMemory((u32 *)&g_socContext, header->heapVA + header->heapSize, 0, SOC_BUFFERSIZE, MEMOP_FREE, MEMPERM_DONTCARE);
-}
-
-
-
-void NewEntry(const char *name, const char *hint) {
-
-    if (menu.nbItems >= MAX_ITEMS_COUNT) { return; }
+// Add an entry in the menu
+void    NewEntry(const char *name, const char *hint)
+{
+    if (menu.nbItems >= MAX_ITEMS_COUNT)
+        return;
 
     u32 index = menu.nbItems;
 
     menu.states[index] = 0;
-
-    if(name) { strncpy(menu.items[index], name, MAX_BUFFER); }
-    if(hint) { strncpy(menu.hints[index], hint, MAX_BUFFER); }
-
+    if (name)
+        strncpy(menu.items[index], name, MAX_BUFFER);
+    if (hint)
+        strncpy(menu.hints[index], hint, MAX_BUFFER);
     ++menu.nbItems;
 }
 
-
-
-void InitMenu() {
+// Create the menu
+void InitMenu(void) {
 
     memset(&menu, 0, sizeof(menu));
     strncpy(menu.title, "3DRAMS plugin", MAX_BUFFER);
     NewEntry("Activate connection to 3DRAMS.", "Start communications with 3DRAMS.");
 }
-
-
 
 bool InitTCP(int *listenSocket) {
 
@@ -123,11 +104,90 @@ bool InitTCP(int *listenSocket) {
     return true;
 }
 
-/*To do:
+Result SocketContextInit() {
 
-    - Add real error codes
+    PluginHeader *header = (PluginHeader *)0x07000000;
+    return svcControlMemory((u32 *)&g_socContext, header->heapVA + header->heapSize, 0, SOC_BUFFERSIZE, MEMOP_ALLOC, MEMPERM_READ | MEMPERM_WRITE);
+}
 
-*/
+Result SocketContextExit() {
+
+    PluginHeader *header = (PluginHeader *)0x07000000;
+    return svcControlMemory((u32 *)&g_socContext, header->heapVA + header->heapSize, 0, SOC_BUFFERSIZE, MEMOP_FREE, MEMPERM_DONTCARE);
+}
+
+void Flash(u32 color) {
+
+    color |= 0x01000000;
+    for (u32 i = 0; i < 64; i++) {
+
+        REG32(0x10202204) = color;
+        svcSleepThread(10000000);
+    }
+
+    REG32(0x10202204) = 0;
+}
+
+void communicateWith3DRAMS(const int socket, fd_set *listenSet, struct timeval *timeout, bool *connected) {
+
+    select(socket+1, listenSet, NULL, NULL, timeout);
+
+    if(FD_ISSET(socket, listenSet)) {
+
+        char *message = (char*) malloc(MAX_MESSAGE_SIZE*sizeof(char));
+
+        char *msgTitle, *msgBody;
+
+        int communicationResult = recv(socket, message, MAX_MESSAGE_SIZE, 0);
+
+        if(communicationResult == 0) { 
+
+            *connected = false; 
+            close(socket);
+        }
+
+        else if (communicationResult < 0) {
+
+            char *msgTitle = "Communication error:";
+            char *msgBody = strerror(errno);
+            PLGLDR__DisplayErrMessage(msgTitle, msgBody, errno);
+            *connected = false; 
+            close(socket);
+        }
+
+        else {
+
+            ResultArray *result = executeRequest(message, (uint16_t)communicationResult);
+            
+            char *reply = (char*) malloc(MAX_MESSAGE_SIZE*sizeof(char));
+
+            bool wantToDisconnect = false;
+
+            if(result->currentParametersIndex != 0) {
+
+                uint16_t messageSize = 0;
+
+                for(uint16_t i = 0; i < result->nbRequest+1; i++) {
+                    
+                    messageSize = requestToString(result->requestArray[i], reply);
+                    if(result->requestArray[i].type == Disconnect) { wantToDisconnect = true; }
+                    communicationResult = send(socket, reply, messageSize, 0);
+                    Flash(0xFFFFFF);
+                }
+            }
+
+            //Special case
+            /*if(wantToDisconnect) {
+                *connected = false; 
+                close(socket);
+            }*/
+
+            free(reply);
+        }
+
+        free(message);
+    }
+}
 
 // Plugin main thread entrypoint
 void ThreadMain(void *arg) {
@@ -135,73 +195,56 @@ void ThreadMain(void *arg) {
     SocketContextInit(); 
     InitMenu();
 
-    int listenSocket = 0, clientSocket = -1;
-    bool connectedTo3DRAMS = false;
-    bool haveToStop = !InitTCP(&listenSocket); //Call socInit
-
+    int clientSocket = -1, listenSocket = -1;
+    int selectResult = 0, communicationResult = 0;
+    bool haveToStop = !InitTCP(&listenSocket), connectedTo3DRAMS = false;
     char *msgTitle, *msgBody;
+    struct timeval timeout = {0, 100000};
 
-    //For listening connection
-
-    int selectResult = 0;
-    int communicationResult = 0;
+    unsigned int currentTime = 0;
+    u32 currentColor;
 
     fd_set communicationFD;
-
     FD_SET(listenSocket, &communicationFD);
-    
-
-    //For both
-
-    struct timeval timeout = {0, 1000};
 
     while(!haveToStop)  {
 
         if(svcWaitSynchronization(onProcessExitEvent, 1000000) != 0x09401BFE)  { haveToStop = true;  }
 
-        //Display main menu
         if(HID_PAD & BUTTON_SELECT) { PLGLDR__DisplayMenu(&menu); }
 
         if(!connectedTo3DRAMS && menu.states[0]) {
 
-            select(listenSocket, &communicationFD, NULL, NULL, &timeout);
+            select(listenSocket+1, &communicationFD, NULL, NULL, &timeout);
             
             if(FD_ISSET(listenSocket, &communicationFD)) {
 
                 clientSocket = accept(listenSocket, NULL, 0);
-                FD_CLR(listenSocket, &communicationFD);
+                FD_ZERO(&communicationFD);
                 FD_SET(clientSocket, &communicationFD);
                 connectedTo3DRAMS = true;
 
-                msgTitle = "Connected !";
+                msgTitle = "Connected.";
                 msgBody =  "Connected to 3DRAMS.";
                 PLGLDR__DisplayMessage(msgTitle, msgBody);
             }
         }
 
-        if(connectedTo3DRAMS) {
+        if(connectedTo3DRAMS) { 
 
-            select(clientSocket, &communicationFD, NULL, NULL, &timeout);
+            communicateWith3DRAMS(clientSocket, &communicationFD, &timeout, &connectedTo3DRAMS);
 
-            if(FD_ISSET(clientSocket, &communicationFD)) {
+            if(!connectedTo3DRAMS) {
 
-                msgTitle = "Message from 3DRAMS";
-                communicationResult = recv(clientSocket, msgBody, 32, 0);
+                FD_ZERO(&communicationFD);
+                FD_SET(listenSocket, &communicationFD);
 
-                if(communicationResult == 0) { //Disconnected
-
-                    msgBody = "Disconnected";
-                    connectedTo3DRAMS = false;
-                    FD_CLR(clientSocket, &communicationFD);
-                    FD_SET(listenSocket, &communicationFD);
-                }
-                
+                msgTitle = "Disconnected.";
+                msgBody =  "Disconnected from 3DRAMS.";
                 PLGLDR__DisplayMessage(msgTitle, msgBody);
-            }
+            } 
         }
 
-
-        //CommunicateWith3DRAMS();
         //ApplyCheats();
     }
 
@@ -250,8 +293,6 @@ void    main(void)
 
     // Get the event triggered  when the game will exit
     svcControlProcess(CUR_PROCESS_HANDLE, PROCESSOP_GET_ON_EXIT_EVENT, (u32)&onProcessExitEvent, (u32)&resumeExitEvent);
-
-
 
     // Create the plugin's main thread
     svcCreateThread(&thread, ThreadMain, 0, (u32 *)(stack + STACK_SIZE), 30, -1);

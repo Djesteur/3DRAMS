@@ -7,7 +7,7 @@ Version: # Plugin version
 
 Targets: # Low TitleId of games which are compatibles with this plugin (empty for all)
 
-Title: default
+Title: Sample Plugin
 
 Summary: Empty plugin, showcasing luma's plugin menu usage
 
