@@ -78,9 +78,10 @@ main.o: \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/plgldr.h \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/csvc.h \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h \
- /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Request.h \
  /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestExecutor.h \
- /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Request.h \
+ /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Converter.h
 
 /opt/devkitpro/libctru/include/arpa/inet.h:
 
@@ -238,8 +239,10 @@ main.o: \
 
 /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/common.h:
 
-/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h:
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Request.h:
 
 /mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestExecutor.h:
 
-/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/RequestTranslater.h:
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Request.h:
+
+/mnt/Data/Programmation/ProjetsPerso/3DRAMS/default/includes/Converter.h:

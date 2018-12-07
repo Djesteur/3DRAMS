@@ -1,38 +1,21 @@
-#ifndef REQUESTEXECUTOR_HPP
-#define REQUESTEXECUTOR_HPP
+#ifndef REQUESTEXECUTOR_H
+#define REQUESTEXECUTOR_H
 
-#include "RequestTranslater.h"
-
-#define MAX_REQUEST_RESULT 3
-
-typedef struct {
-
-	Request *requestArray;
-	uint16_t nbRequest;
-	uint16_t currentParametersIndex;
-
-} ResultArray;
-
-
-ResultArray* initResultArray(const Request request);
-
-void addValue(ResultArray *resultArray, const uint8_t newValue);
-void addPairOfValue(ResultArray *resultArray, const uint8_t firstValue, const uint8_t secondValue);
-
-void freeResultArray(ResultArray *resultArray);
+#include "Request.h"
+#include "Converter.h"
 
 //Return the result (as a request)
 
-ResultArray* executeRequest(const char *msg, const uint16_t msgSize);
+Request* executeRequest(const char *msg);
 
-void connectRequest(ResultArray *resultArray);
-void disconnectRequest(ResultArray *resultArray);
-void getValueRequest(ResultArray *resultArray);
-void getRangeOfValueRequest(ResultArray *resultArray);
-void setValueRequest(ResultArray *resultArray);
-void sendCheatCodeRequest(ResultArray *resultArray);
-void deleteCheatCodeRequest(ResultArray *resultArray);
-void changeEnableCheatCodeRequest(ResultArray *resultArray);
-void getSetOfValueRequest(ResultArray *resultArray);
+Request* connectRequest(Request *request);
+Request* disconnectRequest(Request *request);
+Request* getValueRequest(Request *request);
+Request* getRangeOfValueRequest(Request *request);
+Request* setValueRequest(Request *request);
+Request* sendCheatCodeRequest(Request *request);
+Request* deleteCheatCodeRequest(Request *request);
+Request* changeEnableCheatCodeRequest(Request *request);
+Request* getSetOfValueRequest(Request *request);
 
 #endif

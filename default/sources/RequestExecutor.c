@@ -1,147 +1,106 @@
 #include "RequestExecutor.h"
 
-ResultArray* initResultArray(const Request request) {
+Request* executeRequest(const char *msg) {
 
-    ResultArray *newArray = (ResultArray*) malloc(sizeof(ResultArray));
+    Request *newRequest = stringToRequest(msg), *result;
 
-    newArray->nbRequest = 0;
-    newArray->currentParametersIndex = 0;
-    newArray->requestArray = (Request*) malloc(sizeof(Request)*MAX_REQUEST_RESULT);
-
-    for(uint16_t i = 0; i < MAX_REQUEST_RESULT; i++) {
-
-        newArray->requestArray[i].type = request.type;
-        newArray->requestArray[i].requester = request.requester;
-        newArray->requestArray[i].nbParameters = 0;
-        newArray->requestArray[i].parameters = (uint8_t*) malloc(MAX_MESSAGE_SIZE*sizeof(uint8_t));
-    }
-
-    return newArray;
-}
-
-void addValue(ResultArray *resultArray, const uint8_t newValue) {
-
-    if(resultArray->currentParametersIndex + 1 > MAX_MESSAGE_SIZE) {
-
-        if(resultArray->nbRequest + 1 > MAX_REQUEST_RESULT) { return; } //Totally full, can't add more
-
-        resultArray->nbRequest += 1;
-        resultArray->currentParametersIndex = 0;
-
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex] = newValue;
-        resultArray->requestArray[resultArray->nbRequest].nbParameters += 1;
-    }
-
-    else {
-
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex] = newValue;
-        resultArray->requestArray[resultArray->nbRequest].nbParameters += 1;
-        resultArray->currentParametersIndex += 1;
-    }
-}
-
-void addPairOfValue(ResultArray *resultArray, const uint8_t firstValue, const uint8_t secondValue) {
-
-    if(resultArray->currentParametersIndex + 2 >= MAX_MESSAGE_SIZE) {
-
-        if(resultArray->nbRequest + 1 > MAX_REQUEST_RESULT) { return; } //Totally full, can't add more
-
-        resultArray->nbRequest += 1;
-        resultArray->currentParametersIndex = 0;
-
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex] = firstValue;
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex+1] = secondValue;
-        resultArray->requestArray[resultArray->nbRequest].nbParameters += 2;
-    }
-
-    else { 
-
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex] = firstValue;
-        resultArray->requestArray[resultArray->nbRequest].parameters[resultArray->currentParametersIndex+1] = secondValue;
-        resultArray->requestArray[resultArray->nbRequest].nbParameters += 2;
-        resultArray->currentParametersIndex += 2; 
-    }
-}
-
-void freeResultArray(ResultArray *resultArray) {
-
-    if(resultArray != NULL) {
-
-        uint16_t i = 0;
-
-        bool haveToStop = false;
-
-        while(!haveToStop) {
-
-            if(resultArray->requestArray[i].parameters == NULL) { haveToStop = true; }
-            else { free(resultArray->requestArray[i].parameters); }
-
-            i++;
-        }
-
-        free(resultArray->requestArray);
-        free(resultArray);
-    }
-}
-
-
-ResultArray* executeRequest(const char *msg, const uint16_t msgSize) {
-
-    ResultArray *resultArray;
-    Request newRequest = stringToRequest(msg, msgSize);
-    resultArray = initResultArray(newRequest);
-
-    switch(newRequest.type) {
+    switch(newRequest->type) {
 
        case Connect:
-            connectRequest(resultArray);
+            result = connectRequest(newRequest);
             break;
 
         case Disconnect:
-        	disconnectRequest(resultArray);
+        	result = disconnectRequest(newRequest);
             break;
 
         case GetValue:
-        	getValueRequest(resultArray);
+        	result = getValueRequest(newRequest);
             break;
                 
         case GetRangeOfValue:
-        	getRangeOfValueRequest(resultArray);
+        	result = getRangeOfValueRequest(newRequest);
             break;
 
         case SetValue:
-        	setValueRequest(resultArray);
+        	result = setValueRequest(newRequest);
             break;
 
         case SendCheatCode:
-        	sendCheatCodeRequest(resultArray);
+        	result = sendCheatCodeRequest(newRequest);
             break;
 
         case DeleteCheatCode:
-        	deleteCheatCodeRequest(resultArray);
+        	result = deleteCheatCodeRequest(newRequest);
             break;
 
         case ChangeEnableCheatCode:
-        	changeEnableCheatCodeRequest(resultArray);
+        	result = changeEnableCheatCodeRequest(newRequest);
             break;
 
         case GetSetOfValue:
-        	getSetOfValueRequest(resultArray);
+        	result = getSetOfValueRequest(newRequest);
             break;
     }
 
-    freeRequestParameters(newRequest);
+    freeRequest(newRequest);
 
-    return resultArray;
+    return result;
 }
 
-void connectRequest(ResultArray *resultArray) {}
-void disconnectRequest(ResultArray *resultArray) { addValue(resultArray, 0x00000000); }
+Request* connectRequest(Request *request) {
 
-void getValueRequest(ResultArray *resultArray) {}
-void getRangeOfValueRequest(ResultArray *resultArray) {}
-void setValueRequest(ResultArray *resultArray) {}
-void sendCheatCodeRequest(ResultArray *resultArray) {}
-void deleteCheatCodeRequest(ResultArray *resultArray) {}
-void changeEnableCheatCodeRequest(ResultArray *resultArray) {}
-void getSetOfValueRequest(ResultArray *resultArray) {}
+    Request *newResult = newRequest(request->requester, request->type);
+    writeByte(newResult, 0);
+
+    return newResult;
+}
+
+Request* disconnectRequest(Request *request) {
+
+    Request *newResult = newRequest(request->requester, request->type);
+    writeByte(newResult, 0);
+
+    return newResult;
+}
+
+Request* getValueRequest(Request *request) {
+
+    uint32_t *getValueOfNumber;
+    getValueOfNumber = (uint32_t*)(parametersToNumber(&(request->parameters[0])));
+
+    Request *newResult = newRequest(request->requester, request->type);
+    writeNumber(newResult, *getValueOfNumber);
+
+    return newResult;
+}
+
+Request* getRangeOfValueRequest(Request *request) {
+
+    return newRequest(0, 0);
+}
+
+Request* setValueRequest(Request *request) {
+
+    return newRequest(0, 0);
+}
+
+Request* sendCheatCodeRequest(Request *request) {
+
+    return newRequest(0, 0);
+}
+
+Request* deleteCheatCodeRequest(Request *request) {
+
+    return newRequest(0, 0);
+}
+
+Request* changeEnableCheatCodeRequest(Request *request) {
+
+    return newRequest(0, 0);
+}
+
+Request* getSetOfValueRequest(Request *request) {
+
+    return newRequest(0, 0);
+}

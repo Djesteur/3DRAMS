@@ -14,7 +14,7 @@
 
 #include <QObject>
 
-#include "RequestTranslater.hpp"
+#include "Request.hpp"
 
 class AbstractModule;
 

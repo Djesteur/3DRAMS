@@ -9,9 +9,6 @@ ConnectionToPlugin::ConnectionToPlugin():
 
     m_connectionSocket = socket(AF_INET, SOCK_STREAM, 0);
     if(m_connectionSocket < 0) { throw std::runtime_error("ERROR: can't create a new socket."); }
-
-    FD_ZERO(&m_waitingFD);
-    FD_SET(m_connectionSocket, &m_waitingFD);
 }
 
 ConnectionToPlugin::~ConnectionToPlugin() { close(m_connectionSocket); }
@@ -20,16 +17,24 @@ void ConnectionToPlugin::addModule(const Module moduleType, AbstractModule &modu
 
 void ConnectionToPlugin::run() {
 
+    FD_ZERO(&m_waitingFD);
+    FD_SET(m_connectionSocket, &m_waitingFD);
+
     while(!m_haveToStop){
 
         ::select(m_connectionSocket+1, &m_waitingFD, nullptr, nullptr, &m_selectTimeout);
         if(FD_ISSET(m_connectionSocket, &m_waitingFD)) {
 
-            std::string message;
-            message.resize(MAX_MESSAGE_SIZE);
-            ::recv(m_connectionSocket, &message[0], MAX_MESSAGE_SIZE, 0);
-            newResultReceived(stringToRequest(message));
+            char message[MAX_REQUEST_SIZE];
+            ::recv(m_connectionSocket, message, MAX_REQUEST_SIZE, 0);
+            Request *result = stringToRequest(message);
+
+            newResultReceived(*result);
+            freeRequest(result);
         }
+
+        FD_ZERO(&m_waitingFD);
+        FD_SET(m_connectionSocket, &m_waitingFD);
     }
 }
 
@@ -45,7 +50,7 @@ void ConnectionToPlugin::newRequest(const Request request) {
         connectToServer(address, 10700);
     }
 
-   else {sendRequest(request); }
+   else { sendRequest(request); }
 }
 
 void ConnectionToPlugin::stopProgram() { m_haveToStop = true; }
@@ -56,17 +61,13 @@ void ConnectionToPlugin::disconnect() {
 
     m_connectionSocket = -1;
     m_isConnected = false;
-
-    emit m_modules[Module::Informations]->newResult(Request{Module::Connection, RequestType::Disconnect, {0}});
-    emit m_modules[Module::Connection]->newResult(Request{Module::Connection, RequestType::Disconnect, {0}});
 }
 
 void ConnectionToPlugin::sendRequest(const Request &request) {
 
-    std::cout << "Request send !" << std::endl;
-
-    std::string message{requestToString(request)};
-    ::send(m_connectionSocket, &message[0], message.size(), 0);
+    char message[MAX_MESSAGE_SIZE];
+    uint32_t messageSize{requestToString(&request, message)};
+    ::send(m_connectionSocket, &message[0], messageSize, 0);
 }
 
 void ConnectionToPlugin::connectToServer(const std::string address, const short unsigned int port) {
@@ -83,15 +84,17 @@ void ConnectionToPlugin::connectToServer(const std::string address, const short 
     m_isConnected = true;
     //A rendre non blocable
 
-    emit m_modules[Module::Informations]->newResult(Request{Module::Connection, RequestType::Connect, {static_cast<uint8_t>(connectResult)}});
-    emit m_modules[Module::Connection]->newResult(Request{Module::Connection, RequestType::Connect, {static_cast<uint8_t>(connectResult)}});
+    Request *connectionResult{::newRequest(Module::Connection, RequestType::Connect)};
+
+    emit m_modules[Module::Informations]->newResult(*connectionResult);
+    emit m_modules[Module::Connection]->newResult(*connectionResult);
+
+    freeRequest(connectionResult);
 }
 
 void ConnectionToPlugin::newResultReceived(const Request &request) {
 
-    std::cout << "New message !" << std::endl;
-
-    if(request.type == RequestType::Connect) { /*????*/ }
-    else if(request.type == RequestType::Disconnect) { disconnect(); }
-    else { emit m_modules[request.requester]->newResult(request); }
+    emit m_modules[request.requester]->newResult(request);
+    emit m_modules[Module::Informations]->newResult(request);
+    if(request.type == RequestType::Disconnect) { disconnect(); }
 }

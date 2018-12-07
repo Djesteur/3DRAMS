@@ -10,9 +10,11 @@
 #include <QPlainTextEdit>
 #include <QTextEdit>
 
+class MainWindow;
 
 #include "AbstractModule.hpp"
 
+#include "Request.hpp"
 
 class ConnectionModule : public AbstractModule {
 
@@ -20,7 +22,7 @@ class ConnectionModule : public AbstractModule {
 
     public:
 
-        ConnectionModule(ConnectionToPlugin &connectionToPlugin, QWidget *parent = nullptr);
+        ConnectionModule(MainWindow *mainWindow, QWidget *parent = nullptr);
 
         virtual ~ConnectionModule();
 
@@ -39,7 +41,7 @@ class ConnectionModule : public AbstractModule {
             QPushButton m_connectionButton;
             QPushButton m_disconnectionButton;
 
-        const int m_maxIPChar;
+        const unsigned int m_maxIPChar;
 };
 
 std::vector<std::string> splitDatas(const std::string &datas, const char spliter);

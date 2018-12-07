@@ -4,6 +4,8 @@
 #include <QTextEdit>
 #include <QHBoxLayout>
 
+class MainWindow;
+
 #include "AbstractModule.hpp"
 
 class InformationModule: public AbstractModule  {
@@ -12,7 +14,7 @@ class InformationModule: public AbstractModule  {
 
     public:
 
-        InformationModule(ConnectionToPlugin &connectionToPlugin, QWidget *parent = nullptr);
+        InformationModule(MainWindow *mainWindow, QWidget *parent = nullptr);
 
         virtual ~InformationModule();
 

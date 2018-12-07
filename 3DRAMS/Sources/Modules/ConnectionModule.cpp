@@ -1,7 +1,9 @@
+#include "MainWindow.hpp"
 #include "ConnectionModule.hpp"
 
-ConnectionModule::ConnectionModule(ConnectionToPlugin &connectionToPlugin, QWidget *parent):
-    AbstractModule{connectionToPlugin, parent},
+
+ConnectionModule::ConnectionModule(MainWindow *mainWindow, QWidget *parent):
+    AbstractModule{mainWindow, parent},
     m_maxIPChar{15} {
 
     m_connectionButton.setText(tr("Connexion"));
@@ -52,38 +54,33 @@ void ConnectionModule::newResult(Request result) {
 
 void ConnectionModule::connectButtonSlot() {
 
-    Request request;
-    request.type = RequestType::Connect;
-    request.requester = Module::Connection;
-    request.parameters.resize(4);
-
     std::vector<std::string> splitedString{splitDatas(m_connectionIP.toPlainText().toUtf8().constData(), '.')};
 
     if(splitedString.size() == 4) {
 
-        request.parameters[0] = static_cast<uint8_t>(std::stoul(splitedString[0]));
-        request.parameters[1] = static_cast<uint8_t>(std::stoul(splitedString[1]));
-        request.parameters[2] = static_cast<uint8_t>(std::stoul(splitedString[2]));
-        request.parameters[3] = static_cast<uint8_t>(std::stoul(splitedString[3]));
+        Request *request{newRequest(Module::Connection, RequestType::Connect)};
 
-        emit m_connectionToPlugin.newRequest(request);
+        writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[0])));
+        writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[1])));
+        writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[2])));
+        writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[3])));
+
+        emit m_mainWindow->newRequest(request);
     }
 }
 
 void ConnectionModule::disconnectButtonSlot() {
 
-    Request request;
-    request.type = RequestType::Disconnect;
-    request.requester = Module::Connection;
-    request.parameters = {0};
+    Request *request{newRequest(Module::Connection, RequestType::Disconnect)};
+    writeByte(request, 0);
 
-    emit m_connectionToPlugin.newRequest(request);
+    emit m_mainWindow->newRequest(request);
 }
 
 
 void ConnectionModule::limitIPSize() {
 
-    if(m_connectionIP.toPlainText().length() > m_maxIPChar) { m_connectionIP.textCursor().deletePreviousChar();  }
+    if(m_connectionIP.toPlainText().length() > static_cast<int>(m_maxIPChar)) { m_connectionIP.textCursor().deletePreviousChar();  }
 }
 
 

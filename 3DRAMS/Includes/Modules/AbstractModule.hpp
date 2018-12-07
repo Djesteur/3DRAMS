@@ -6,8 +6,9 @@
 
 #include <QWidget>
 
-#include "ConnectionToPlugin.hpp"
+#include "Request.hpp"
 
+class MainWindow;
 
 class AbstractModule : public QWidget {
 
@@ -15,7 +16,7 @@ class AbstractModule : public QWidget {
 
     public:
 
-        AbstractModule(ConnectionToPlugin &connectionToPlugin, QWidget *parent = nullptr);
+        AbstractModule(MainWindow *mainWindow, QWidget *parent = nullptr);
 
         virtual ~AbstractModule();
 
@@ -25,7 +26,7 @@ class AbstractModule : public QWidget {
 
     protected:
 
-        ConnectionToPlugin &m_connectionToPlugin;
+        MainWindow *m_mainWindow;
 };
 
 #endif

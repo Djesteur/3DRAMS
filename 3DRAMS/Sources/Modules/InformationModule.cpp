@@ -1,7 +1,9 @@
+#include "MainWindow.hpp"
 #include "InformationModule.hpp"
 
-InformationModule::InformationModule(ConnectionToPlugin &connectionToPlugin, QWidget *parent):
-    AbstractModule{connectionToPlugin, parent} {
+
+InformationModule::InformationModule(MainWindow *mainWindow, QWidget *parent):
+    AbstractModule{mainWindow, parent} {
 
     m_text.setReadOnly(true);
     m_text.setFixedHeight(600);

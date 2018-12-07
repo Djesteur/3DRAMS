@@ -10,7 +10,7 @@
 #include "csvc.h"
 #include "common.h"
 
-#include "RequestTranslater.h"
+#include "Request.h"
 #include "RequestExecutor.h"
 
 static PluginMenu   menu;
@@ -18,8 +18,7 @@ static Handle       thread;
 static Handle       onProcessExitEvent, resumeExitEvent;
 static u8           stack[STACK_SIZE] ALIGN(8);
 
-#define SOC_ALIGN       0x1000
-#define SOC_BUFFERSIZE  0x100000 // Used in 3ds example in the github of devkitARM
+#define SOC_BUFFERSIZE  0x10000 // Used in 3ds example in the github of devkitARM
 
 static u32 *g_socContext = NULL;
 void* __service_ptr;
@@ -130,6 +129,9 @@ void Flash(u32 color) {
 
 void communicateWith3DRAMS(const int socket, fd_set *listenSet, struct timeval *timeout, bool *connected) {
 
+    FD_ZERO(listenSet);
+    FD_SET(socket, listenSet);
+
     select(socket+1, listenSet, NULL, NULL, timeout);
 
     if(FD_ISSET(socket, listenSet)) {
@@ -140,7 +142,7 @@ void communicateWith3DRAMS(const int socket, fd_set *listenSet, struct timeval *
 
         int communicationResult = recv(socket, message, MAX_MESSAGE_SIZE, 0);
 
-        if(communicationResult == 0) { 
+        if(communicationResult == 0 || errno == 0x68) { 
 
             *connected = false; 
             close(socket);
@@ -157,32 +159,35 @@ void communicateWith3DRAMS(const int socket, fd_set *listenSet, struct timeval *
 
         else {
 
-            ResultArray *result = executeRequest(message, (uint16_t)communicationResult);
-            
-            char *reply = (char*) malloc(MAX_MESSAGE_SIZE*sizeof(char));
+            Request *result = executeRequest(message);
 
-            bool wantToDisconnect = false;
+            if(result == NULL) {
 
-            if(result->currentParametersIndex != 0) {
+                char *msgTitle = "Request result:";
+                char *msgBody = "Returning NULL (message size < 4)";
+                PLGLDR__DisplayMessage(msgTitle, msgBody);
 
-                uint16_t messageSize = 0;
-
-                for(uint16_t i = 0; i < result->nbRequest+1; i++) {
-                    
-                    messageSize = requestToString(result->requestArray[i], reply);
-                    if(result->requestArray[i].type == Disconnect) { wantToDisconnect = true; }
-                    communicationResult = send(socket, reply, messageSize, 0);
-                    Flash(0xFFFFFF);
-                }
-            }
-
-            //Special case
-            /*if(wantToDisconnect) {
                 *connected = false; 
                 close(socket);
-            }*/
+            }
 
-            free(reply);
+            else {
+
+                char *reply = (char*) malloc(MAX_MESSAGE_SIZE*sizeof(char));
+
+                uint16_t messageSize = requestToString(result, reply);
+                communicationResult = send(socket, reply, messageSize, 0);
+
+                //Special case
+                if(result->type == Disconnect) {
+
+                    *connected = false; 
+                    close(socket);
+                }
+
+                freeRequest(result);
+                free(reply);
+            }
         }
 
         free(message);
@@ -205,6 +210,7 @@ void ThreadMain(void *arg) {
     u32 currentColor;
 
     fd_set communicationFD;
+    FD_ZERO(&communicationFD);
     FD_SET(listenSocket, &communicationFD);
 
     while(!haveToStop)  {
