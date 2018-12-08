@@ -1,2 +1,2 @@
 3DRAMS is a software for view and edit 3ds ram from a pc, using wifi connection.
-The homebrew need to be launch for communicating with the software.
+The Luma's plugin must be use and activated in game (press Select once the game is launched).
