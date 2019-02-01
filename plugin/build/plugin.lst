@@ -1,0 +1,193 @@
+07000100 T _start
+07000100 T __start__
+0700012c t ClearMem
+07000140 t ClrLoop
+07000158 T _init
+07000188 00000390 T strcmp
+07000510 t deregister_tm_clones
+0700053c t register_tm_clones
+07000574 t __do_global_dtors_aux
+070005b8 t frame_dummy
+070005ec 0000011c T requestToString
+07000708 00000100 T stringToRequest
+07000808 00000068 T writeByte
+07000870 000000c8 T writeNumber
+07000938 0000007c T newRequest
+070009b4 00000044 T freeRequest
+070009f8 0000007c T parametersToNumber
+07000a74 0000001c t htonl
+07000a90 00000024 t htons
+07000ab4 000000fc T NewEntry
+07000bb0 00000050 T InitMenu
+07000c00 000001ec T InitTCP
+07000dec 00000058 T SocketContextInit
+07000e44 00000058 T SocketContextExit
+07000e9c 00000288 T communicateWith3DRAMS
+07001124 000003c4 T ThreadMain
+070014e8 00000074 T __system_allocateHeaps
+0700155c 0000009c T main
+070015f8 00000044 t IPC_MakeHeader
+0700163c 00000030 t IPC_Desc_Buffer
+0700166c 0000001c t getThreadLocalStorage
+07001688 00000018 t getThreadCommandBuffer
+070016a0 00000090 T plgLdrInit
+07001730 00000050 T plgLdrExit
+07001780 0000019c T PLGLDR__DisplayMenu
+0700191c 000000f0 T PLGLDR__DisplayMessage
+07001a0c 00000104 T PLGLDR__DisplayErrMessage
+07001b10 0000001c t getThreadLocalStorage
+07001b2c 00000114 T executeRequest
+07001c40 00000048 T connectRequest
+07001c88 00000048 T disconnectRequest
+07001cd0 00000068 T getValueRequest
+07001d38 00000038 T getRangeOfValueRequest
+07001d70 00000028 T setValueRequest
+07001d98 00000028 T sendCheatCodeRequest
+07001dc0 00000028 T deleteCheatCodeRequest
+07001de8 00000028 T changeEnableCheatCodeRequest
+07001e10 00000154 T getSetOfValueRequest
+07001f64 00000098 T freezeGameRequest
+07001ffc 00000044 t ThreadPredicate
+07002040 00000028 T FreezeGameFunction
+07002068 00000028 T UnfreezeGameFunction
+07002090 T svcControlProcess
+07002098 00000018 T usleep
+070020b0 00000058 T srvExit
+07002108 00000038 T srvRegisterClient
+07002140 000000c8 T srvInit
+07002208 00000080 T srvGetServiceHandleDirect
+07002288 00000038 T srvGetServiceHandle
+070022c0 0000000c T srvPmGetSessionHandle
+070022cc 000004d8 T select
+070027a4 000001e4 T accept
+07002988 00000154 T socket
+07002adc 00000020 T recv
+07002afc 00000010 t soc_open
+07002b0c 00000030 t soc_read
+07002b3c 00000030 t soc_write
+07002b6c 00000090 t soc_close
+07002bfc 0000014c T socInit
+07002d48 00000088 T socExit
+07002dd0 0000003c T _net_convert_error
+07002e0c 0000017c T bind
+07002f88 000000f8 T listen
+07003080 0000013c T socuipc_cmd7
+070031bc 00000154 T socuipc_cmd8
+07003310 00000010 T soc_recvfrom
+07003320 00000090 T recvfrom
+070033b0 0000015c T socuipc_cmd9
+0700350c 00000160 T socuipc_cmda
+0700366c 00000010 T soc_sendto
+0700367c 00000090 T sendto
+0700370c 00000238 T poll
+07003944 00000020 T send
+07003964 T svcControlMemory
+07003984 T svcCreateThread
+070039a4 T svcExitThread
+070039ac T svcSleepThread
+070039b4 T svcSignalEvent
+070039bc T svcCreateMemoryBlock
+070039d4 T svcCloseHandle
+070039dc T svcWaitSynchronization
+070039e4 T svcDuplicateHandle
+070039f8 T svcConnectToPort
+07003a0c T svcSendSyncRequest
+07003a14 00000080 T envGetHandle
+07003a94 00000020 T calloc
+07003ab4 00000094 T _calloc_r
+07003b48 0000000c T __errno
+07003b54 00000018 T malloc
+07003b6c 00000018 T free
+07003b84 0000078c T _malloc_r
+07004310 00000118 T memcpy
+07004428 00000114 T memset
+0700453c 0000000c T __malloc_lock
+07004548 0000000c T __malloc_unlock
+07004554 0000063c T _strerror_r
+07004b90 00000020 T strerror
+07004bb0 0000005c T strlen
+07004c0c 000000e0 T strncpy
+07004cec 0000005c T strnlen
+07004d48 00000018 T close
+07004d60 00000008 T _user_strerror
+07004d68 000000f8 T _malloc_trim_r
+07004e60 000002e4 T _free_r
+07005144 00000008 t null_write
+0700514c 000000cc T FindDevice
+07005218 00000028 T RemoveDevice
+07005240 00000098 T AddDevice
+070052d8 00000084 T _close_r
+0700535c 00000070 T _sbrk_r
+070053cc 00000018 T __libc_lock_acquire
+070053e4 00000018 T __libc_lock_release
+070053fc 00000018 T __libc_lock_acquire_recursive
+07005414 00000018 T __libc_lock_release_recursive
+0700542c 0000008c T __release_handle
+070054b8 000000b4 T __alloc_handle
+0700556c 00000018 T __get_handle
+07005584 00000028 T __getreent
+070055ac 00000024 T __locale_ctype_ptr
+070055d0 000002fc T __utf8_mbtowc
+070058cc 00000180 T strchr
+07005a4c 0000010c T strncmp
+07005b58 000000e8 T __utf8_wctomb
+07005c40 T _fini
+07005dd8 0000004d r _net_error_code_map
+07006530 00000070 R dotab_stdnull
+070065e8 00000101 R _ctype_
+070066ec R __exidx_end
+070066ec R __exidx_start
+070066ec 00000068 d soc_devoptab
+07006754 00000408 D __malloc_av_
+07006b5c 00000004 D __malloc_sbrk_base
+07006b60 00000004 D __malloc_trim_threshold
+07006b64 0000000c d __malloc_recursive_mutex
+07006b70 00000004 d defaultDevice
+07006b74 00000040 D devoptab_list
+07006bb4 00000004 d __hndl_lock
+07006bb8 0000000c d __stderr_handle
+07006bc4 0000000c d __stdin_handle
+07006bd0 0000000c d __stdout_handle
+07006bdc 00001000 d handles
+07007bdc 00000004 D _impure_ptr
+07007be0 00000460 d impure_data
+07008040 0000016c D __global_locale
+070081ac t __frame_dummy_init_array_entry
+070081ac D __tdata_lma
+070081ac D __tdata_lma_end
+070081ac D __TMC_END__
+070081b0 t __do_global_dtors_aux_fini_array_entry
+070081b4 B __c_bss_start
+070081b8 00001978 b menu
+07009b30 00000004 b thread
+07009b34 00000004 b onProcessExitEvent
+07009b38 00000004 b resumeExitEvent
+07009b40 00001000 b stack
+0700ab40 00000004 b g_socContext
+0700ab44 00000004 B nbReceive
+0700ab48 00000004 B __ctru_heap_size
+0700ab4c 00000004 B __ctru_linear_heap_size
+0700ab50 00000004 b plgLdrHandle
+0700ab54 00000004 b plgLdrRefCount
+0700ab58 b completed.10347
+0700ab5c b object.10352
+0700ab74 00000004 b srvHandle
+0700ab78 00000004 b srvRefCount
+0700ab7c 00000004 b srvPmHandle
+0700ab80 00000004 B SOCU_handle
+0700ab84 00000004 B socMemhandle
+0700ab88 00000028 B __malloc_current_mallinfo
+0700abb0 00000004 B __malloc_max_sbrked_mem
+0700abb4 00000004 B __malloc_max_total_mem
+0700abb8 00000004 B __malloc_top_pad
+0700abbc 00000004 b heap_start.7392
+0700abc0 00000004 B fake_heap_end
+0700abc4 00000004 B fake_heap_start
+0700abc8 00000048 B __syscalls
+0700ac10 00000004 B __service_ptr
+0700ac14 00000004 B __ctru_linear_heap
+0700ac18 00000004 B __ctru_heap
+0700ac1c B __c_bss_end
+0700ac1c A __end__
+0700ac1c B __tls_end
+0700ac1c B __tls_start
