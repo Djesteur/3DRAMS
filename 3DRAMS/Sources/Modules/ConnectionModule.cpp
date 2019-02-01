@@ -1,16 +1,15 @@
-#include "MainWindow.hpp"
 #include "ConnectionModule.hpp"
 
-
-ConnectionModule::ConnectionModule(MainWindow *mainWindow, QWidget *parent):
-    AbstractModule{mainWindow, parent},
+ConnectionModule::ConnectionModule(RequestTransmitter &transmitter, QWidget *parent):
+    AbstractModule{transmitter, parent},
     m_maxIPChar{15} {
 
-    m_connectionButton.setText(tr("Connexion"));
-    m_disconnectionButton.setText(tr("Déconnexion"));
+    m_connectionButton.setText(tr("Connect"));
+    m_disconnectionButton.setText(tr("Disconnect"));
     m_disconnectionButton.setEnabled(false);
 
-    m_connectionIP.setPlainText("192.168.1.10");
+    m_connectionIP.setInputMask("000.000.000.000");
+    m_connectionIP.setText("192.168.001.010");
     m_connectionIP.setFixedHeight(25);
     m_connectionIP.setFixedWidth(101);
 
@@ -20,7 +19,6 @@ ConnectionModule::ConnectionModule(MainWindow *mainWindow, QWidget *parent):
 
     setLayout(&m_mainLayout);
 
-    connect(&m_connectionIP, &QPlainTextEdit::textChanged, this, &ConnectionModule::limitIPSize);
     connect(&m_connectionButton, &QPushButton::clicked, this, &ConnectionModule::connectButtonSlot);
     connect(&m_disconnectionButton, &QPushButton::clicked, this, &ConnectionModule::disconnectButtonSlot);
 }
@@ -53,8 +51,8 @@ void ConnectionModule::newResult(Request result) {
 }
 
 void ConnectionModule::connectButtonSlot() {
-
-    std::vector<std::string> splitedString{splitDatas(m_connectionIP.toPlainText().toUtf8().constData(), '.')};
+    
+    std::vector<std::string> splitedString{splitDatas(m_connectionIP.text().toUtf8().constData(), '.')};
 
     if(splitedString.size() == 4) {
 
@@ -65,7 +63,7 @@ void ConnectionModule::connectButtonSlot() {
         writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[2])));
         writeByte(request, static_cast<uint8_t>(std::stoul(splitedString[3])));
 
-        emit m_mainWindow->newRequest(request);
+        m_transmitter.addRequest(request);
     }
 }
 
@@ -74,15 +72,8 @@ void ConnectionModule::disconnectButtonSlot() {
     Request *request{newRequest(Module::Connection, RequestType::Disconnect)};
     writeByte(request, 0);
 
-    emit m_mainWindow->newRequest(request);
+    m_transmitter.addRequest(request);
 }
-
-
-void ConnectionModule::limitIPSize() {
-
-    if(m_connectionIP.toPlainText().length() > static_cast<int>(m_maxIPChar)) { m_connectionIP.textCursor().deletePreviousChar();  }
-}
-
 
 
 std::vector<std::string> splitDatas(const std::string &datas, const char spliter) {

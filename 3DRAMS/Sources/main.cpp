@@ -6,17 +6,18 @@
 
 #include "ConnectionToPlugin.hpp"
 
+#include "RequestTransmitter.hpp"
+
 int main(int argc, char *argv[]) {
 
-	std::list<Request*> request, result;
-	std::mutex requestMutex, resultMutex;
+	RequestTransmitter transmitter;
 
-    ConnectionToPlugin plugin;
-
-    QApplication a(argc, argv);
-    MainWindow w{plugin, request, result, requestMutex, resultMutex};
+    ConnectionToPlugin plugin{transmitter};
 
     std::thread communicationThread{[&plugin]() { plugin.run(); }};
+
+    QApplication a{argc, argv};
+    MainWindow w{transmitter};
 
     w.show();
     a.exec();

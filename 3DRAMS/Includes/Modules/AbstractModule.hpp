@@ -7,8 +7,8 @@
 #include <QWidget>
 
 #include "Request.hpp"
-
-class MainWindow;
+#include "Converter.hpp"
+#include "RequestTransmitter.hpp"
 
 class AbstractModule : public QWidget {
 
@@ -16,7 +16,7 @@ class AbstractModule : public QWidget {
 
     public:
 
-        AbstractModule(MainWindow *mainWindow, QWidget *parent = nullptr);
+        AbstractModule(RequestTransmitter &transmitter, QWidget *parent = nullptr);
 
         virtual ~AbstractModule();
 
@@ -26,7 +26,7 @@ class AbstractModule : public QWidget {
 
     protected:
 
-        MainWindow *m_mainWindow;
+        RequestTransmitter &m_transmitter;
 };
 
 #endif

@@ -2,19 +2,13 @@
 #define CONNECTIONMODULE_HPP
 
 #include <sstream>
+#include <iostream>
 
 #include <QHBoxLayout>
-
-#include <QTabWidget>
 #include <QPushButton>
-#include <QPlainTextEdit>
-#include <QTextEdit>
-
-class MainWindow;
+#include <QLineEdit>
 
 #include "AbstractModule.hpp"
-
-#include "Request.hpp"
 
 class ConnectionModule : public AbstractModule {
 
@@ -22,7 +16,7 @@ class ConnectionModule : public AbstractModule {
 
     public:
 
-        ConnectionModule(MainWindow *mainWindow, QWidget *parent = nullptr);
+        ConnectionModule(RequestTransmitter &transmitter, QWidget *parent = nullptr);
 
         virtual ~ConnectionModule();
 
@@ -30,14 +24,13 @@ class ConnectionModule : public AbstractModule {
 
         virtual void newResult(Request result);
 
-        void limitIPSize();
         void connectButtonSlot();
         void disconnectButtonSlot();
 
     private:
 
         QHBoxLayout m_mainLayout;
-            QPlainTextEdit m_connectionIP;
+            QLineEdit m_connectionIP;
             QPushButton m_connectionButton;
             QPushButton m_disconnectionButton;
 

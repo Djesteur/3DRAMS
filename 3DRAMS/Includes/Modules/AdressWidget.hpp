@@ -1,4 +1,4 @@
-#ifndef SURVEILMODULE_HPP
+#ifndef HEXAWIDGET_HPP
 #define SURVEILMODULE_HPP
 
 #include <QHBoxLayout>
@@ -6,8 +6,6 @@
 #include <QPushButton>
 
 #include "AbstractModule.hpp"
-
-#include "HexaWidget.hpp"
 
 class SurveilModule : public AbstractModule {
 
@@ -25,11 +23,15 @@ class SurveilModule : public AbstractModule {
 
     private:
 
+        void newCharEntered();
+
         QHBoxLayout m_mainLayout;
 
-            HexaWidget m_addressText;
+            QPlainTextEdit m_addressText;
             QPushButton m_sendButton;
-            HexaWidget m_resultText;
+            QPlainTextEdit m_resultText;
+
+       const unsigned int m_maxAddressChar;
 };
 
 #endif

@@ -3,8 +3,7 @@
 
 #include <QTextEdit>
 #include <QHBoxLayout>
-
-class MainWindow;
+#include <QTime>
 
 #include "AbstractModule.hpp"
 
@@ -14,7 +13,7 @@ class InformationModule: public AbstractModule  {
 
     public:
 
-        InformationModule(MainWindow *mainWindow, QWidget *parent = nullptr);
+        InformationModule(RequestTransmitter &transmitter, QWidget *parent = nullptr);
 
         virtual ~InformationModule();
 
@@ -24,9 +23,10 @@ class InformationModule: public AbstractModule  {
 
     private:
 
-        void insertInfos(QString info);
+        void insertInfos(QString info, QColor textColor);
 
         void connectionInfo(Request result);
+        void generalInfo(Request result);
 
         QHBoxLayout m_mainLayout;
             QTextEdit m_text;

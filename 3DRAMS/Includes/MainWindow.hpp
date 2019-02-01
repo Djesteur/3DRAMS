@@ -12,10 +12,12 @@
 #include <QTimer>
 
 #include "Request.hpp"
+#include "RequestTransmitter.hpp"
 
-class ConnectionModule;
-class InformationModule;
-class SurveilModule;
+#include "ConnectionModule.hpp"
+#include "InformationModule.hpp"
+#include "SurveilModule.hpp"
+#include "SeekerModule.hpp"
 
 class MainWindow : public QMainWindow {
 
@@ -23,15 +25,15 @@ class MainWindow : public QMainWindow {
 
     public:
 
-        MainWindow(std::list<Request*> &requestList, std::list<Request*> &resultList,
-                   std::mutex &requestMutex, std::mutex &resultMutex, QWidget *parent = nullptr);
+        MainWindow(RequestTransmitter &transmitter, QWidget *parent = nullptr);
 
     public slots:
 
-        virtual void newRequest(Request *request);
         virtual void update();
 
     private:
+
+        RequestTransmitter &m_transmitter;
 
         QWidget m_mainWidget;
 
@@ -39,15 +41,15 @@ class MainWindow : public QMainWindow {
 
             QVBoxLayout m_constantModules;
 
-                InformationModule *m_informationModule;
-                ConnectionModule *m_connectionModule;
+                InformationModule m_informationModule;
+                ConnectionModule m_connectionModule;
 
-            SurveilModule *m_surveilModule;
+            QTabWidget m_variableModules;
+
+                SurveilModule m_surveilModule;
+                SeekerModule m_seekerModule;
 
         QTimer m_timer;
-
-        std::list<Request*> &m_requestList, &m_resultList;
-        std::mutex &m_requestMutex, &m_resultMutex;
 };
 
 #endif

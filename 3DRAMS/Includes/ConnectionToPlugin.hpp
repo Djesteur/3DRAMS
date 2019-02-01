@@ -12,30 +12,23 @@
 #include <array>
 #include <map>
 
-#include <QObject>
+#include <string.h>
 
 #include "Request.hpp"
+#include "RequestTransmitter.hpp"
 
-class AbstractModule;
-
-class ConnectionToPlugin: public QObject {
-
-    Q_OBJECT
+class ConnectionToPlugin {
 
     public:
 
-        ConnectionToPlugin();
+        ConnectionToPlugin(RequestTransmitter &transmitter);
         ~ConnectionToPlugin();
 
         ConnectionToPlugin(const ConnectionToPlugin&) = delete;
         ConnectionToPlugin &operator=(const ConnectionToPlugin&) = delete;
 
-        void addModule(const Module moduleType, AbstractModule &module);
         void run();
 
-    public slots:
-
-        void newRequest(const Request request);
         void stopProgram();
 
     private:
@@ -43,15 +36,14 @@ class ConnectionToPlugin: public QObject {
         void connectToServer(const std::string adress, const short unsigned int port);
         void disconnect();
         void sendRequest(const Request &request);
-        void newResultReceived(const Request &request);
 
-        int m_connectionSocket;
+        RequestTransmitter &m_transmitter;
+
+        const int m_connectionSocket;
         fd_set m_waitingFD;
         struct timeval m_selectTimeout;
 
-        bool m_haveToStop, m_isConnected;
-
-        std::map<Module, AbstractModule*> m_modules;
+        bool m_haveToStop, m_isConnected, m_alreadyBeenConnected;
 };
 
 #endif

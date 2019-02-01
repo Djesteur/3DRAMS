@@ -1,8 +1,7 @@
-#include "MainWindow.hpp"
 #include "AbstractModule.hpp"
 
-AbstractModule::AbstractModule(MainWindow *mainWindow, QWidget *parent):
+AbstractModule::AbstractModule(RequestTransmitter &transmitter, QWidget *parent):
     QWidget{parent},
-    m_mainWindow{mainWindow} {}
+    m_transmitter{transmitter} {}
 
 AbstractModule::~AbstractModule() {}
